@@ -1,4 +1,4 @@
-package dev.isaac.digiloteca.model.enums;
+package dev.isaac.digiloteca.enums;
 
 public enum StatusExemplar {
     DISPONIVEL,

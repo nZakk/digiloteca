@@ -1,7 +1,7 @@
 package dev.isaac.digiloteca.model;
 
+import dev.isaac.digiloteca.enums.StatusExemplar;
 import jakarta.persistence.*;
-import dev.isaac.digiloteca.model.enums.StatusExemplar;
 
 @Entity
 @Table(name = "exemplar")
