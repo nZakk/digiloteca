@@ -1,10 +1,14 @@
 package dev.isaac.digiloteca.model;
 
+import java.util.ArrayList;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.util.List;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,6 +37,9 @@ public class Livro {
 
     @Column(length = 2000)
     private String descricao;
+
+    @OneToMany(mappedBy = "livro")
+    private List<Exemplar> exemplares = new ArrayList<>();
 
     public Livro() {
     }
@@ -99,6 +106,14 @@ public class Livro {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public List<Exemplar> getExemplares() {
+        return exemplares;
+    }
+
+    public void setExemplares(List<Exemplar> exemplares) {
+        this.exemplares = exemplares;
     }
 
 }
