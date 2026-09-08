@@ -1,5 +1,6 @@
 package dev.isaac.digiloteca.service;
 
+import dev.isaac.digiloteca.dto.AtualizarStatusExemplarRequest;
 import dev.isaac.digiloteca.dto.CriarExemplarRequest;
 import dev.isaac.digiloteca.dto.ExemplarResponse;
 import dev.isaac.digiloteca.enums.StatusExemplar;
@@ -45,6 +46,24 @@ public class ExemplarService {
             exemplarSalvo.getStatus(),
             livro.getId(),
             livro.getTitulo()
+        );
+    }
+
+    public ExemplarResponse atualizarStatus(Long exemplarId, AtualizarStatusExemplarRequest request) {
+        
+        Exemplar exemplar = exemplarRepository.findById(exemplarId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exemplar não encontrado"));
+
+
+        exemplar.setStatus(request.getStatus());
+        Exemplar exemplarAtualizado = exemplarRepository.save(exemplar);
+
+        return new ExemplarResponse(
+            exemplarAtualizado.getId(),
+            exemplarAtualizado.getCodigo(),
+            exemplarAtualizado.getStatus(),
+            exemplarAtualizado.getLivro().getId(),
+            exemplarAtualizado.getLivro().getTitulo()
         );
     }
 

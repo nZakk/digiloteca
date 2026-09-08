@@ -1,5 +1,6 @@
 package dev.isaac.digiloteca.controller;
 
+import dev.isaac.digiloteca.dto.AtualizarStatusExemplarRequest;
 import dev.isaac.digiloteca.dto.CriarExemplarRequest;
 import dev.isaac.digiloteca.dto.ExemplarResponse;
 import dev.isaac.digiloteca.service.ExemplarService;
@@ -28,5 +29,5 @@ public class ExemplarController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(exemplar);
     }
-    
+
 }
