@@ -54,8 +54,24 @@ public class ExemplarService {
         Exemplar exemplar = exemplarRepository.findById(exemplarId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exemplar não encontrado"));
 
+        StatusExemplar statusAtual = exemplar.getStatus();
+        StatusExemplar novoStatus = request.getStatus();
 
-        exemplar.setStatus(request.getStatus());
+        boolean alteracaoManualPermitida =
+            (statusAtual == StatusExemplar.DISPONIVEL
+                    && novoStatus == StatusExemplar.INDISPONIVEL)
+            ||
+            (statusAtual == StatusExemplar.INDISPONIVEL
+                    && novoStatus == StatusExemplar.DISPONIVEL);
+
+        if (!alteracaoManualPermitida) {
+            throw new ResponseStatusException(
+                HttpStatus.CONFLICT,
+                "Esta alteração de status deve ser realizada pelo fluxo de reserva ou empréstimo."
+            );
+        }
+
+        exemplar.setStatus(novoStatus);
         Exemplar exemplarAtualizado = exemplarRepository.save(exemplar);
 
         return new ExemplarResponse(
