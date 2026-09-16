@@ -38,18 +38,100 @@ function Home() {
   return (
     <div>
 
-      <section>
-        <h2>Bem-vindo à Biblioteca Comunitária</h2>
+      <section className="hero">
 
-        <p>
-          Consulte nosso acervo, encontre livros disponíveis
-          e acompanhe os próximos eventos da comunidade.
-        </p>
+  <div className="hero-conteudo">
 
-        <Link to="/catalogo">
-          Ver catálogo
-        </Link>
-      </section>
+    <p className="hero-subtitulo">
+      Conhecimento para todos
+    </p>
+
+    <h1>
+      Biblioteca Comunitária
+    </h1>
+
+    <p>
+      Consulte livros, participe de eventos
+      e contribua com doações para fortalecer
+      o acesso à leitura na comunidade.
+    </p>
+
+    <div className="acoes">
+
+      <Link
+        to="/catalogo"
+        className="botao"
+      >
+        Explorar catálogo
+      </Link>
+
+      <Link
+        to="/doacoes/nova"
+        className="botao botao-secundario"
+      >
+        Doar livros
+      </Link>
+
+    </div>
+
+  </div>
+
+</section>
+
+<section>
+
+  <h2>O que você pode fazer</h2>
+
+  <div className="grid-cards">
+
+    <article className="card">
+
+      <h3>Consultar livros</h3>
+
+      <p>
+        Veja os livros disponíveis no acervo
+        da biblioteca.
+      </p>
+
+      <Link to="/catalogo">
+        Ver catálogo
+      </Link>
+
+    </article>
+
+    <article className="card">
+
+      <h3>Reservar</h3>
+
+      <p>
+        Reserve um exemplar disponível
+        para retirada.
+      </p>
+
+      <Link to="/reservas/nova">
+        Fazer reserva
+      </Link>
+
+    </article>
+
+    <article className="card">
+
+      <h3>Doar</h3>
+
+      <p>
+        Ajude a ampliar o acervo da
+        biblioteca comunitária.
+      </p>
+
+      <Link to="/doacoes/nova">
+        Quero doar
+      </Link>
+
+    </article>
+
+  </div>
+
+</section>
 
       <section>
 

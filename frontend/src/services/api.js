@@ -100,3 +100,12 @@ export async function criarDoacao(dados) {
 
   return processarResposta(response)
 }
+
+export async function buscarEventos() {
+
+  const response = await fetch(
+    `${API_URL}/eventos`
+  )
+
+  return processarResposta(response)
+}

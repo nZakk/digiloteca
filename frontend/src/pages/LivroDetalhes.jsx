@@ -32,6 +32,17 @@ function LivroDetalhes() {
 
       }
     }
+    function formatarStatus(status) {
+
+      const nomes = {
+        DISPONIVEL: 'Disponível',
+        RESERVADO: 'Reservado',
+        EMPRESTADO: 'Emprestado',
+        INDISPONIVEL: 'Indisponível',
+      }
+
+      return nomes[status] || status
+    }
 
     carregarLivro()
 
@@ -121,9 +132,17 @@ function LivroDetalhes() {
 
         <div key={exemplar.id}>
 
+          <div key={exemplar.id} className="exemplar">
+
+          <span>
           {exemplar.codigo}
-          {' — '}
-          {exemplar.status}
+          </span>
+
+          <span className={`status ${exemplar.status.toLowerCase()}`}>
+          {formatarStatus(exemplar.status)}
+          </span>
+
+          </div>
 
         </div>
 

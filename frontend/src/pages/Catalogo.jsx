@@ -54,31 +54,39 @@ function Catalogo() {
         </p>
       )}
 
-      {livros.map(livro => (
+      <div className="grid-cards">
 
-        <article key={livro.id}>
+  {livros.map(livro => (
 
-          <h3>
-            {livro.titulo}
-          </h3>
+    <article
+      key={livro.id}
+      className="card"
+    >
 
-          <p>
-            <strong>Autor:</strong>{' '}
-            {livro.autor}
-          </p>
+      <span className="categoria">
+        {livro.categoria}
+      </span>
 
-          <p>
-            <strong>Categoria:</strong>{' '}
-            {livro.categoria}
-          </p>
+      <h3>
+        {livro.titulo}
+      </h3>
 
-          <Link to={`/livros/${livro.id}`}>
-            Ver detalhes
-          </Link>
+      <p>
+        {livro.autor}
+      </p>
 
-        </article>
+      <Link
+        to={`/livros/${livro.id}`}
+        className="botao-link"
+      >
+        Ver detalhes
+      </Link>
 
-      ))}
+    </article>
+
+  ))}
+
+</div>
 
     </div>
   )
