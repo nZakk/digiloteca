@@ -8,6 +8,10 @@ import LivroDetalhes from './pages/LivroDetalhes'
 import NovaReserva from './pages/NovaReserva'
 import NovaDoacao from './pages/NovaDoacao'
 import NotFound from './pages/NotFound'
+import Eventos from './pages/Eventos'
+import Login from './pages/Login'
+import Cadastro from './pages/Cadastro'
+import RequireAuth from './components/RequireAuth'
 
 function App() {
 
@@ -34,19 +38,41 @@ function App() {
           />
 
           <Route
+            path="/eventos"
+            element={<Eventos />}
+          />
+
+          <Route
             path="/reservas/nova"
-            element={<NovaReserva />}
+            element={
+              <RequireAuth>
+                <NovaReserva />
+              </RequireAuth>
+            }
           />
 
           <Route
             path="/doacoes/nova"
-            element={<NovaDoacao />}
-          />
-
+            element={
+              <RequireAuth>
+                <NovaDoacao />
+              </RequireAuth>
+            }
+          /> 
 
           <Route
             path="*"
             element={<NotFound />}
+          />
+
+          <Route
+            path="/login"
+            element={<Login />}
+          />
+
+          <Route 
+          path="/cadastro"
+          element={<Cadastro />}
           />
 
         </Routes>

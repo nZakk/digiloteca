@@ -11,6 +11,18 @@ function LivroDetalhes() {
   const [carregando, setCarregando] = useState(true)
   const [erro, setErro] = useState(null)
 
+  function formatarStatus(status) {
+
+  const nomes = {
+    DISPONIVEL: 'Disponível',
+    RESERVADO: 'Reservado',
+    EMPRESTADO: 'Emprestado',
+    INDISPONIVEL: 'Indisponível',
+  }
+
+  return nomes[status] || status
+}
+
   useEffect(() => {
 
     async function carregarLivro() {
@@ -31,17 +43,6 @@ function LivroDetalhes() {
         setCarregando(false)
 
       }
-    }
-    function formatarStatus(status) {
-
-      const nomes = {
-        DISPONIVEL: 'Disponível',
-        RESERVADO: 'Reservado',
-        EMPRESTADO: 'Emprestado',
-        INDISPONIVEL: 'Indisponível',
-      }
-
-      return nomes[status] || status
     }
 
     carregarLivro()

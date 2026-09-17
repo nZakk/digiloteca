@@ -6,6 +6,7 @@ import dev.isaac.digiloteca.model.Usuario;
 import dev.isaac.digiloteca.repository.UsuarioRepository;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -17,9 +18,15 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
+    private final PasswordEncoder passwordEncoder;
+
+    public UsuarioService(
+        UsuarioRepository usuarioRepository,
+        PasswordEncoder passwordEncoder) {
+
+    this.usuarioRepository = usuarioRepository;
+    this.passwordEncoder = passwordEncoder;
+        }
 
     public UsuarioResponse criar(CriarUsuarioRequest request) {
 
@@ -35,7 +42,9 @@ public class UsuarioService {
         usuario.setNome(request.getNome());
         usuario.setEmail(request.getEmail());
         usuario.setTelefone(request.getTelefone());
-
+        usuario.setSenha(
+            passwordEncoder.encode(request.getSenha())
+        );
         usuario.setDataCadastro(LocalDateTime.now());
         usuario.setAtivo(true);
 

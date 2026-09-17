@@ -20,6 +20,9 @@ public class Usuario {
 
     private String telefone;
 
+    @Column(nullable = false)
+    private String senha;
+
     @Column(name = "data_cadastro", nullable = false)
     private LocalDateTime dataCadastro;
 
@@ -75,5 +78,13 @@ public class Usuario {
 
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 import {
   buscarLivros,
-  buscarUsuarios,
   criarReserva
 } from '../services/api'
 
@@ -14,10 +14,9 @@ function NovaReserva() {
   const livroIdInicial =
     searchParams.get('livroId') || ''
 
-  const [usuarios, setUsuarios] = useState([])
+  const { usuario } = useAuth()
   const [livros, setLivros] = useState([])
 
-  const [usuarioId, setUsuarioId] = useState('')
   const [livroId, setLivroId] =
     useState(livroIdInicial)
 
@@ -32,53 +31,60 @@ function NovaReserva() {
 
   useEffect(() => {
 
-    async function carregarDados() {
+  async function carregarDados() {
 
-      try {
+    try {
 
-        const [
-          usuariosRecebidos,
-          livrosRecebidos
-        ] = await Promise.all([
-          buscarUsuarios(),
-          buscarLivros()
-        ])
+      const livrosRecebidos =
+        await buscarLivros()
 
-        setUsuarios(
-          usuariosRecebidos.filter(
-            usuario => usuario.ativo
-          )
-        )
+      setLivros(livrosRecebidos)
 
-        setLivros(livrosRecebidos)
+    } catch (error) {
 
-      } catch (error) {
+      setErro(error.message)
 
-        setErro(error.message)
+    } finally {
 
-      } finally {
+      setCarregando(false)
 
-        setCarregando(false)
-
-      }
     }
 
-    carregarDados()
+  }
 
-  }, [])
+  carregarDados()
+
+}, [])
 
   async function handleSubmit(event) {
 
-    event.preventDefault()
+      event.preventDefault()
 
-    setErro(null)
-    setSucesso(null)
-    setEnviando(true)
+  setErro(null)
+  setSucesso(null)
+
+  if (!usuario?.id) {
+
+    setErro(
+      'Não foi possível identificar o usuário logado. Faça login novamente.'
+    )
+
+    return
+  }
+
+  if (!livroId) {
+
+    setErro('Selecione um livro.')
+    return
+  }
+
+  setEnviando(true)
+
 
     try {
 
       const reserva = await criarReserva({
-        usuarioId: Number(usuarioId),
+        usuarioId: usuario.id,
         livroId: Number(livroId),
       })
 
@@ -112,39 +118,6 @@ function NovaReserva() {
       <h2>Nova Reserva</h2>
 
       <form onSubmit={handleSubmit}>
-
-        <div>
-          <label htmlFor="usuario">
-            Usuário
-          </label>
-
-          <select
-            id="usuario"
-            value={usuarioId}
-            onChange={event =>
-              setUsuarioId(event.target.value)
-            }
-            required
-          >
-
-            <option value="">
-              Selecione um usuário
-            </option>
-
-            {usuarios.map(usuario => (
-
-              <option
-                key={usuario.id}
-                value={usuario.id}
-              >
-                {usuario.nome}
-              </option>
-
-            ))}
-
-          </select>
-        </div>
-
         <div>
           <label htmlFor="livro">
             Livro

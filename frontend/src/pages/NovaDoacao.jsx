@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 import {
-  buscarUsuarios,
   criarDoacao
 } from '../services/api'
 
 function NovaDoacao() {
 
-  const [usuarios, setUsuarios] = useState([])
-
-  const [usuarioId, setUsuarioId] = useState('')
+  const { usuario } = useAuth()
   const [tituloLivro, setTituloLivro] = useState('')
   const [autor, setAutor] = useState('')
   const [isbn, setIsbn] = useState('')
@@ -24,46 +22,28 @@ function NovaDoacao() {
   const [erro, setErro] = useState(null)
   const [sucesso, setSucesso] = useState(null)
 
-  useEffect(() => {
-
-    async function carregarUsuarios() {
-
-      try {
-
-        const dados =
-          await buscarUsuarios()
-
-        setUsuarios(
-          dados.filter(usuario => usuario.ativo)
-        )
-
-      } catch (error) {
-
-        setErro(error.message)
-
-      } finally {
-
-        setCarregando(false)
-
-      }
-    }
-
-    carregarUsuarios()
-
-  }, [])
+  useEffect(() => {setCarregando(false)}, [])
 
   async function handleSubmit(event) {
+  event.preventDefault()
 
-    event.preventDefault()
+  setErro(null)
+  setSucesso(null)
 
-    setErro(null)
-    setSucesso(null)
-    setEnviando(true)
+  if (!usuario?.id) {
+    setErro(
+      'Não foi possível identificar o usuário logado. Faça login novamente.'
+    )
+    return
+  }
+
+  setEnviando(true)
+
 
     try {
 
       const doacao = await criarDoacao({
-        usuarioId: Number(usuarioId),
+        usuarioId: usuario.id,
         tituloLivro,
         autor,
         isbn,
@@ -114,38 +94,6 @@ function NovaDoacao() {
       </p>
 
       <form onSubmit={handleSubmit}>
-
-        <div>
-          <label htmlFor="usuarioDoacao">
-            Doador
-          </label>
-
-          <select
-            id="usuarioDoacao"
-            value={usuarioId}
-            onChange={event =>
-              setUsuarioId(event.target.value)
-            }
-            required
-          >
-
-            <option value="">
-              Selecione um usuário
-            </option>
-
-            {usuarios.map(usuario => (
-
-              <option
-                key={usuario.id}
-                value={usuario.id}
-              >
-                {usuario.nome}
-              </option>
-
-            ))}
-
-          </select>
-        </div>
 
         <div>
           <label htmlFor="titulo">

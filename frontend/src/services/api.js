@@ -45,24 +45,25 @@ async function processarResposta(response) {
 
     const erro = await response.json()
 
-    if (erro.mensagem) {
+    if (
+      erro.campos &&
+      Object.keys(erro.campos).length > 0
+    ) {
+
+      mensagem = Object.values(erro.campos)
+        .join(' ')
+
+    } else if (erro.mensagem) {
+
       mensagem = erro.mensagem
+
     }
 
   } catch {
-    // mantém a mensagem padrão
+    // mantém mensagem padrão
   }
 
   throw new Error(mensagem)
-}
-
-export async function buscarUsuarios() {
-
-  const response = await fetch(
-    `${API_URL}/usuarios`
-  )
-
-  return processarResposta(response)
 }
 
 export async function criarReserva(dados) {
@@ -105,6 +106,38 @@ export async function buscarEventos() {
 
   const response = await fetch(
     `${API_URL}/eventos`
+  )
+
+  return processarResposta(response)
+}
+
+export async function cadastrarUsuario(dados) {
+
+  const response = await fetch(
+    `${API_URL}/usuarios`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dados),
+    }
+  )
+
+  return processarResposta(response)
+}
+
+export async function loginUsuario(dados) {
+
+  const response = await fetch(
+    `${API_URL}/auth/login`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dados),
+    }
   )
 
   return processarResposta(response)
